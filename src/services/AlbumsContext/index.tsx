@@ -1,14 +1,37 @@
 import React, { createContext, useReducer } from 'react';
-import { ImageReviewStatus, Album, Albums } from '../../types/types';
+import {
+    ImageReviewStatus,
+    Album,
+    Albums,
+    ReviewImage,
+} from '../../types/types';
 import log from '../Log';
 import { AlbumsAction, AlbumsState } from '../../types/types';
 
 export const initialState = {
     album: undefined,
-    albums: undefined,
+    albums: {
+        Schnorkles: {
+            description: 'Insane in the Poll Plane (Insane in the Brain!)',
+            hash: 'YFfW2VB',
+            status: true,
+        },
+        Snoo: {
+            description:
+                "You think you're too good to look at rats? YOU AREN'T!!!",
+            hash: 'EDGl2l2',
+            status: true,
+        },
+        Corn: {
+            description: 'Pictures of corn are funny for this one afternoon',
+            hash: 'XU0p9vr',
+            status: true,
+        },
+    },
     fetching: false,
     hasFailed: false,
-    imageQueue: undefined,
+    imageQueue: [] as ReviewImage[],
+    review: false,
     dispatch: (action: AlbumsAction) => undefined,
 } as AlbumsState;
 

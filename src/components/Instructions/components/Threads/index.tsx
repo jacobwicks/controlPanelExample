@@ -2,25 +2,28 @@ import React, { useContext } from 'react';
 import { Header, Segment } from 'semantic-ui-react';
 import { InstructionsContext } from '../../../../services/InstructionsContext';
 import getLineHeight from '../../../../services/GetLineHeight';
+import { ThreadsContext } from '../../../../services/ThreadsContext';
 
 const Threads = () => {
-    const { botName, threads } = useContext(InstructionsContext);
+    const { botName } = useContext(InstructionsContext);
+    const { threads } = useContext(ThreadsContext);
+
     const lineHeight = getLineHeight();
 
     const lines = 5;
 
     const maxHeight = lineHeight ? (lines + 1) * lineHeight : 100;
 
-    const zero = !threads.length;
-    const singular = threads.length === 1;
+    const zero = !threads?.length;
+    const singular = threads?.length === 1;
     return (
         <Segment>
             <Header as="h2">
                 {botName} is currently {zero ? 'not ' : ''}watching{' '}
-                {zero ? 'any ' : threads.length} thread{singular ? '' : 's'}
+                {zero ? 'any ' : threads?.length} thread{singular ? '' : 's'}
             </Header>
             <div style={{ maxHeight, overflow: 'auto' }}>
-                {threads.map((thread, index) => (
+                {threads?.map((thread, index) => (
                     <div key={index}>
                         <a
                             href={thread.link}

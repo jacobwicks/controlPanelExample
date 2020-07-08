@@ -1,8 +1,8 @@
 import React, { createContext, useReducer } from 'react';
-import { ThreadsState, ThreadsAction } from '../../types/types';
+import { FrontEndThread, ThreadsState, ThreadsAction } from '../../types/types';
 
 const initialState = {
-    threads: undefined,
+    threads: [] as FrontEndThread[],
     failed: false,
     fetching: false,
     dispatch: (action: ThreadsAction) => undefined,

@@ -7,32 +7,37 @@ import Instructions from './components/Instructions';
 import { LoginContext } from './services/LoginContext';
 import Providers from './components/Providers';
 import { getHeaders } from './services/Api/services/Headers';
-import authFetch from './services/Api/services/AuthFetch';
-import { LoginActionTypes } from './types/types';
+import { LoginActionTypes, ThreadsActionTypes } from './types/types';
+import { ThreadsContext } from './services/ThreadsContext';
+import threadsGenerator from './services/Generators/ThreadsGenerator';
 
 const App2 = () => {
     const { isLoggedIn, dispatch } = useContext(LoginContext);
+    const { dispatch: threadsDispatch } = useContext(ThreadsContext);
     const [hasMounted, setHasMounted] = useState(false);
 
     const checkToken = useCallback(async () => {
         const token = getHeaders();
-        if (token) {
-            const route = 'authenticate';
-
-            const response = await authFetch(route);
-
-            response?.status === 200
-                ? dispatch({ type: LoginActionTypes.success })
-                : dispatch({ type: LoginActionTypes.logout });
-        }
+        token
+            ? dispatch({ type: LoginActionTypes.success })
+            : dispatch({ type: LoginActionTypes.logout });
     }, [dispatch]);
+
+    const loadThreads = useCallback(async () => {
+        const threads = await threadsGenerator();
+        threadsDispatch({
+            type: ThreadsActionTypes.setThreads,
+            threads,
+        });
+    }, [threadsDispatch]);
 
     useEffect(() => {
         if (!hasMounted) {
             setHasMounted(true);
+            loadThreads();
             checkToken();
         }
-    }, [hasMounted, setHasMounted, checkToken]);
+    }, [hasMounted, loadThreads, setHasMounted, checkToken]);
 
     return (
         <React.Fragment>
