@@ -5,7 +5,6 @@ import { AlbumsActionTypes } from '../../../../types/types';
 import AlbumInput from '../AlbumInput';
 import DeleteAlbumModal from '../DeleteAlbumModal';
 import EditableInput from '../../../EditableInput';
-import authFetch from '../../../../services/Api/services/AuthFetch';
 
 const Album = ({ album }: { album: string }) => {
     const { dispatch, albums } = useContext(AlbumsContext);
@@ -25,20 +24,8 @@ const Album = ({ album }: { album: string }) => {
     const thisAlbum = albums[album];
     if (!thisAlbum) return <Loader active />;
 
-    const setAlbumName = async (value: string) => {
+    const setAlbumName = (value: string) => {
         dispatch({ type: AlbumsActionTypes.setName, album, value });
-        const result = authFetch(
-            'renameAlbum',
-            true,
-            JSON.stringify({ album, value })
-        );
-
-        !result &&
-            dispatch({
-                type: AlbumsActionTypes.setName,
-                album: value,
-                value: album,
-            });
     };
 
     return (

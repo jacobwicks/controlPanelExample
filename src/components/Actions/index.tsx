@@ -1,17 +1,9 @@
-import React, { useEffect, useContext, useCallback } from 'react';
-import { authFetchJSON } from '../../services/Api/services/AuthFetch';
+import React, { useContext } from 'react';
 import SideBarActions from './components/SideBarActions';
-import { Loader, Message, Segment, Grid, Header } from 'semantic-ui-react';
+import { Segment, Grid, Header } from 'semantic-ui-react';
 import { ActionsContext } from '../../services/ActionsContext';
 import { ActionsActionTypes } from '../../types/types';
 import CurrentAction from './components/CurrentAction';
-import { reviver } from '../../services/JSONParseRegExReviver';
-
-interface ActionResponse {
-    actions: string;
-}
-
-type AR = ActionResponse | undefined;
 
 const Actions = () => {
     const { dispatch } = useContext(ActionsContext);

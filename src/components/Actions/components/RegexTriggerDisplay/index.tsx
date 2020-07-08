@@ -4,35 +4,19 @@ import ReactMarkdown from '../../../Markdown';
 import useResize from '../../../APIs/components/Instructions/GenericInstructions/services/UseResize';
 import { ActionsContext } from '../../../../services/ActionsContext';
 import { Segment, Header } from 'semantic-ui-react';
+import { getInstructionsObject } from '../Instructions';
+import { InstructionsContext } from '../../../../services/InstructionsContext';
 
 export const RegexTriggerDisplay = () => {
     const { action } = useContext(ActionsContext);
+    const { botName } = useContext(InstructionsContext);
+    const instructionsObject = getInstructionsObject(botName);
+
     const divRef = React.useRef<HTMLDivElement>(null);
     const maxWidth = useResize(divRef);
-    const [input, setInput] = useState('');
-    const [done, setDone] = useState<boolean | string>(false);
+    const input = action && instructionsObject[action];
 
-    const getInput = useCallback(async () => {
-        if (!done || done !== action) {
-            const route = `actionExample/${action}`;
-            interface MarkdownResponse {
-                markdown: string;
-            }
-            type MR = MarkdownResponse | undefined;
-
-            const markdown = ((await authFetchJSON(route)) as MR)?.markdown;
-
-            markdown ? setInput(markdown) : setInput('');
-
-            setDone(action || 'placeholder');
-        }
-    }, [action, done, setDone, setInput]);
-
-    useEffect(() => {
-        getInput();
-    }, [action, getInput]);
-
-    const noExample = !!done && !input;
+    const noExample = !input;
 
     return (
         <Segment>

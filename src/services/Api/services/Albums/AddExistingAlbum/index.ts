@@ -45,16 +45,6 @@ const addExistingAlbum = async ({
         type: AlbumsActionTypes.setAlbum,
         album,
     });
-
-    //ask the api to confirm that the album exists
-    //and if so, add it to the albums
-    const albumAdded = await addExistingAlbumAPI({ album, description, hash });
-
-    !albumAdded &&
-        dispatch({
-            type: AlbumsActionTypes.deleteAlbum,
-            album,
-        });
 };
 
 export default addExistingAlbum;

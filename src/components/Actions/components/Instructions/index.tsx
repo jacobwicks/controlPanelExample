@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Segment, Popup } from 'semantic-ui-react';
 import ReactMarkdown from '../../../Markdown';
 import useResize from '../../../APIs/components/Instructions/GenericInstructions/services/UseResize';
 import { KeyStringInterface } from '../../../../types/types';
+import { InstructionsContext } from '../../../../services/InstructionsContext';
 
-const instructionsObject: KeyStringInterface = {
+export const getInstructionsObject = (botName: string): KeyStringInterface => ({
     AddImageToAlbum: `# Add Image to Album
 
 You can request to add an image to one of the albums that the bot uses. 
@@ -12,7 +13,7 @@ The bot will add all images in a post and/or in quoted posts to the image review
 If the person running the bot approves an image, it will be added to the album.  `,
     DeathToll: `# Death Toll
 
-zeroCool can tell you all about coronavirus. 
+${botName} can tell you all about coronavirus. 
 This handy action scrapes the CDC.gov website and posts the current U.S. Coronavirus Death Toll. 
 It also posts the total number of coronavirus cases.`,
     ImageCloser: `# Closer
@@ -51,7 +52,7 @@ A wonderful gif of Tayne doing a hat wobble.
 ![](https://i.imgur.com/5oCbDFL.gif)`,
     Thoughts: `# Thoughts
 
-Uses [deepai text generator](https://deepai.org/machine-learning-model/text-generator) to produce zeroCool's thoughts about anything. `,
+Uses [deepai text generator](https://deepai.org/machine-learning-model/text-generator) to produce ${botName}'s thoughts about anything. `,
     TrumpWeight: `# Trump Weight
 
 Gives the official regime figures for trump weight and height. 
@@ -70,7 +71,7 @@ No more
 ![](https://i.imgur.com/qXcDIBl.gif)
     
 This incredibly useful action posts a gif from night at the roxbury`,
-};
+});
 
 export const Instructions = ({
     action,
@@ -79,9 +80,12 @@ export const Instructions = ({
     action: string;
     addChildren?: JSX.Element[];
 }) => {
+    const { botName } = useContext(InstructionsContext);
     const divRef = React.useRef<HTMLDivElement>(null);
     const maxWidth = useResize(divRef);
     const [open, setOpen] = useState(false);
+
+    const instructionsObject = getInstructionsObject(botName);
 
     const input = instructionsObject[action];
 

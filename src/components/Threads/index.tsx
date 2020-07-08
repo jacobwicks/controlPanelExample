@@ -1,39 +1,13 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { ThreadsContext } from '../../services/ThreadsContext';
 import { loadThreads } from '../../services/Api/services/Threads';
-import {
-    Grid,
-    Header,
-    Loader,
-    Message,
-    Segment,
-    Button,
-} from 'semantic-ui-react';
+import { Grid, Header, Segment, Button } from 'semantic-ui-react';
 import CurrentThread from './components/CurrentThread';
 import SideBarThreads from './components/SideBarThreads';
-import { BotContext } from '../../services/BotContext';
-import usePrevious from '../../services/UsePrevious';
 import { ThreadsActionTypes } from '../../types/types';
 
 const Threads = () => {
-    const { dispatch, failed, fetching, threads } = useContext(ThreadsContext);
-    const { settings } = useContext(BotContext);
-    const running = !!settings?.running;
-    //this may not work!
-    const wasRunning = usePrevious(running);
-
-    useEffect(() => {
-        !fetching && !failed && !threads && loadThreads(dispatch);
-    }, [dispatch, fetching, failed, threads]);
-
-    useEffect(() => {
-        !fetching && !failed && !running && wasRunning && loadThreads(dispatch);
-    }, [dispatch, fetching, failed, running, wasRunning]);
-
-    if (!threads && fetching) return <Loader active />;
-
-    if (!threads && failed)
-        return <Message warning>Failed to load threads</Message>;
+    const { dispatch, fetching } = useContext(ThreadsContext);
 
     return (
         <Segment>

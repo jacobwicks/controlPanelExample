@@ -40,27 +40,9 @@ const NoAlbum = () => (
 );
 
 const Albums = () => {
-    const [loaded, setLoaded] = useState(false);
-    const {
-        dispatch,
-        album,
-        albums,
-        hasFailed,
-        fetching,
-        imageQueue,
-        review,
-    } = useContext(AlbumsContext);
-
-    useEffect(() => {
-        !fetching && !hasFailed && !albums && loadAlbums(dispatch);
-    }, [dispatch, fetching, hasFailed, albums]);
-
-    useEffect(() => {
-        if (!fetching && !loaded) {
-            loadImageQueue(dispatch);
-            setLoaded(true);
-        }
-    }, [dispatch, fetching, loaded, setLoaded]);
+    const { dispatch, album, fetching, imageQueue, review } = useContext(
+        AlbumsContext
+    );
 
     const toReview = imageQueue?.filter(
         (img) => img.status === ImageReviewStatus.pending

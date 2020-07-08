@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { authFetchJSON } from '../../../../../services/Api/services/AuthFetch';
+import React, { useState } from 'react';
 import { Button, Segment, Popup } from 'semantic-ui-react';
 import ReactMarkdown from '../../../../Markdown';
 import useResize from './services/UseResize';

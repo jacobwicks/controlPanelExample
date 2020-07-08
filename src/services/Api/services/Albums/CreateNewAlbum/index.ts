@@ -43,23 +43,6 @@ const createNewAlbum = async ({
         type: AlbumsActionTypes.setAlbum,
         album,
     });
-
-    //ask the api to create the new album
-    //if successful, it will return the imgur album hash
-    const hash = await createNewAlbumAPI({ album, description });
-
-    //if we get the hash back, store the hash in AlbumsContext
-    hash
-        ? dispatch({
-              type: AlbumsActionTypes.setHash,
-              album,
-              value: hash,
-          })
-        : //no hash? failure. delete the new album locally
-          dispatch({
-              type: AlbumsActionTypes.deleteAlbum,
-              album,
-          });
 };
 
 export default createNewAlbum;

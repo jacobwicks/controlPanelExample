@@ -14,21 +14,25 @@ const openFetch = async (
 ) => {
     const url = `${apiUrl}${route}`;
 
-    const options: Options = {
-        method: post ? 'POST' : 'GET',
+    // const options: Options = {
+    //     method: post ? 'POST' : 'GET',
+    // };
+
+    // try {
+    //     body && typeof body === 'object'
+    //         ? (options.body = JSON.stringify(body, replacer, 2))
+    //         : (options.body = body);
+
+    //     return fetch(url, options);
+    // } catch (err) {
+    //     console.log(`openFetch caught error`, err);
+    //     //log(err);
+    //     return undefined;
+    // }
+    return {
+        status: 200,
+        json: async () => ({}),
     };
-
-    try {
-        body && typeof body === 'object'
-            ? (options.body = JSON.stringify(body, replacer, 2))
-            : (options.body = body);
-
-        return fetch(url, options);
-    } catch (err) {
-        console.log(`openFetch caught error`, err);
-        //log(err);
-        return undefined;
-    }
 };
 
 export const openFetchJSON = async (
