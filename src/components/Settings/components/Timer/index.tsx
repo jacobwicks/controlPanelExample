@@ -4,6 +4,12 @@ import { BotContext } from '../../../../services/BotContext';
 import { BotActionTypes } from '../../../../types/Bot';
 import { loadTimer } from '../../../../services/Api/services/Timer';
 import usePrevious from '../../../../services/UsePrevious';
+import { simulateRunForAllThreads } from '../../../../services/Generators/LogEvents';
+import { ActionsContext } from '../../../../services/ActionsContext';
+import { ThreadsContext } from '../../../../services/ThreadsContext';
+import { EventsContext } from '../../../../services/EventsContext';
+import { runOnce } from '../../../../services/Api';
+import Interval from '../Interval';
 
 // useEffect(() => {
 //     on === false &&
@@ -25,6 +31,11 @@ const Timer = () => {
     const [flash, setFlash] = useState(false);
     const prevRunning = usePrevious(running);
     const prevInterval = usePrevious(settings?.interval);
+
+    const botName = settings?.botName || '';
+    const { actions } = useContext(ActionsContext);
+    const { threads } = useContext(ThreadsContext);
+    const { dispatch: eventsDispatch } = useContext(EventsContext);
 
     //load the timer once
     useEffect(() => {
@@ -57,6 +68,30 @@ const Timer = () => {
         }
     }, [running, prevRunning, dispatch]);
 
+    const doRunOnce = async () => {
+        console.log('do run once called');
+        runOnce(dispatch);
+        await simulateRunForAllThreads({
+            actions,
+            botName,
+            dispatch: eventsDispatch,
+            threads: threads || [],
+        });
+
+        dispatch({
+            type: BotActionTypes.setRunning,
+            running: false,
+        });
+
+        dispatch({
+            type: BotActionTypes.setTimer,
+            timer: {
+                minutes: settings?.interval || 5,
+                seconds: 0,
+            },
+        });
+    };
+
     //tick the timer down by 1 second
     useEffect(() => {
         if (on) {
@@ -73,6 +108,8 @@ const Timer = () => {
 
                 if (seconds === 0) {
                     if (minutes === 0) {
+                        console.log('calling doRunOnce');
+                        doRunOnce();
                         myInterval && clearInterval(myInterval);
                     } else {
                         dispatch({

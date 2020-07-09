@@ -10,8 +10,8 @@ export const initialState = {
     pending: [],
     settings: {
         botName: 'zeroCool',
-        interval: 15,
-        on: false,
+        interval: 2,
+        on: true,
         sigLinkInstructions: true,
         sigShowText: true,
         sigText: 'Hack the planet!!',
@@ -19,7 +19,7 @@ export const initialState = {
         cookies: { exist: true, refreshing: false, testing: false },
     },
     timer: {
-        minutes: 15,
+        minutes: 2,
         seconds: 0,
     },
     dispatch: (action: BotAction) => undefined,

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Tab } from 'semantic-ui-react';
+import { Tab, Message } from 'semantic-ui-react';
 import Actions from '../Actions';
 import Albums from '../Albums';
 import APIs from '../APIs';
@@ -136,7 +136,19 @@ const ControlPanel = () => {
         }
     }, [dispatch, threads]);
 
-    return <Tab panes={tabs} />;
+    return (
+        <>
+            <Message>
+                Welcome to the control panel. This example pulls some
+                information from the forums but isn't actually hooked up to an
+                instance of the bot. <br />
+                Most of the controls will work. <br />
+                Try clicking the 'run once' button to see how it looks when the
+                bot runs and responds to posts.
+            </Message>
+            <Tab panes={tabs} />
+        </>
+    );
 };
 
 export default ControlPanel;

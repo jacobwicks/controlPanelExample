@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useCallback } from 'react';
-import { Loader, Message, Grid } from 'semantic-ui-react';
+import { Loader, Message, Grid, Icon } from 'semantic-ui-react';
 import { Container } from 'semantic-ui-react';
 import Instruction from './components/Instruction';
 import { getInstructions, getBotName } from '../../services/Api';
@@ -40,26 +40,33 @@ const Instructions = () => {
         return <Message warning>Failed to load Instructions</Message>;
 
     return (
-        <Grid>
-            <Grid.Column width={3}>{bot && <User {...bot} />}</Grid.Column>
-            <Grid.Column width={13}>
-                <Container>
-                    {general ? (
-                        <>
-                            <Instruction
-                                name=""
-                                input={general}
-                                forceOpen={true}
-                            />
-                            <Threads />
-                            <ActionsInstructions />
-                        </>
-                    ) : (
-                        <Loader active />
-                    )}
-                </Container>
-            </Grid.Column>
-        </Grid>
+        <>
+            <Message>
+                This is an example of how the forums bot control panel looks.
+                Click the cog icon <Icon name="cog" /> in the upper left to see
+                the control panel.
+            </Message>
+            <Grid>
+                <Grid.Column width={3}>{bot && <User {...bot} />}</Grid.Column>
+                <Grid.Column width={13}>
+                    <Container>
+                        {general ? (
+                            <>
+                                <Instruction
+                                    name=""
+                                    input={general}
+                                    forceOpen={true}
+                                />
+                                <Threads />
+                                <ActionsInstructions />
+                            </>
+                        ) : (
+                            <Loader active />
+                        )}
+                    </Container>
+                </Grid.Column>
+            </Grid>
+        </>
     );
 };
 
