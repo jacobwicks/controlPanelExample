@@ -10,6 +10,9 @@ import { listenToEvents } from '../../services/Api';
 import { EventsContext } from '../../services/EventsContext';
 import { BotContext } from '../../services/BotContext';
 import { ThreadsContext } from '../../services/ThreadsContext';
+import { EventsActionTypes, FrontEndBotSettings } from '../../types/types';
+import { makeEvent } from '../../services/Generators/LogEvents';
+import { InstructionsContext } from '../../services/InstructionsContext';
 
 // edit the config.json file that the bot accesses
 // input api keys and secrets to config.json file
@@ -79,21 +82,59 @@ const tabs = [
 ];
 
 const ControlPanel = () => {
-    const { dispatch: eventsDispatch, failed, listening } = useContext(
-        EventsContext
-    );
-    const { dispatch: threadsDispatch } = useContext(ThreadsContext);
-    const { dispatch: botDispatch } = useContext(BotContext);
+    const { dispatch, listening } = useContext(EventsContext);
+    const { threads } = useContext(ThreadsContext);
+    const { settings } = useContext(BotContext);
+    const { interval, on, running } = settings as FrontEndBotSettings;
 
     useEffect(() => {
-        !listening &&
-            !failed &&
-            listenToEvents({
-                botDispatch,
-                eventsDispatch,
-                threadsDispatch,
+        if (!listening) {
+            dispatch({
+                type: EventsActionTypes.setListening,
+                listening: true,
             });
-    }, [listening, failed, botDispatch, eventsDispatch, threadsDispatch]);
+            dispatch({
+                type: EventsActionTypes.addEvent,
+                event: makeEvent('api started'),
+            });
+            dispatch({
+                type: EventsActionTypes.addEvent,
+                event: {
+                    time: Date(),
+                    data: { setting: { interval } },
+                },
+            });
+            dispatch({
+                type: EventsActionTypes.addEvent,
+                event: { time: Date(), data: { setting: { on } } },
+            });
+            dispatch({
+                type: EventsActionTypes.addEvent,
+                event: { time: Date(), data: { setting: { running } } },
+            });
+        }
+    }, [listening, dispatch, interval, on, running]);
+
+    useEffect(() => {
+        if (!!threads && !!threads.length) {
+            const threadText = threads
+                ? `Watching ${threads.length} thread${
+                      threads.length === 1 ? '' : 's'
+                  }`
+                : 'Not Watching any threads';
+
+            dispatch({
+                type: EventsActionTypes.addEvent,
+                event: {
+                    time: Date(),
+                    data: {
+                        text: threadText,
+                        threads,
+                    },
+                },
+            });
+        }
+    }, [dispatch, threads]);
 
     return <Tab panes={tabs} />;
 };

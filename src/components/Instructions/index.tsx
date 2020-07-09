@@ -24,15 +24,15 @@ const Instructions = () => {
         !fetching && !done && !failed && getInstructions(dispatch);
     }, [actions, dispatch, done, failed, fetching]);
 
-    const loadBotName = useCallback(async () => {
-        const botName = await getBotName();
-        botName &&
-            dispatch({ type: InstructionsActionTypes.setBotName, botName });
-    }, [dispatch]);
+    // const loadBotName = useCallback(async () => {
+    //     const botName = await getBotName();
+    //     botName &&
+    //         dispatch({ type: InstructionsActionTypes.setBotName, botName });
+    // }, [dispatch]);
 
-    useEffect(() => {
-        loadBotName();
-    }, [loadBotName]);
+    // useEffect(() => {
+    //     loadBotName();
+    // }, [loadBotName]);
 
     if (!actions && fetching) return <Loader active />;
 
