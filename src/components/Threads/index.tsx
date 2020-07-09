@@ -7,7 +7,7 @@ import SideBarThreads from './components/SideBarThreads';
 import { ThreadsActionTypes } from '../../types/types';
 
 const Threads = () => {
-    const { dispatch, fetching } = useContext(ThreadsContext);
+    const { dispatch, fetching, threads } = useContext(ThreadsContext);
 
     return (
         <Segment>
@@ -28,7 +28,10 @@ const Threads = () => {
                             disabled={fetching}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                loadThreads(dispatch);
+                                loadThreads({
+                                    dispatch,
+                                    threads: threads || [],
+                                });
                             }}
                             floated="right"
                             icon="refresh"

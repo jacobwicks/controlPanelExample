@@ -31,7 +31,7 @@ const NoThread = () => (
 const CurrentThread = () => {
     const { dispatch, thread, threads } = useContext(ThreadsContext);
 
-    const currentThread = threads?.find((t) => t.threadId === thread);
+    const currentThread = threads?.find((t) => t?.threadId === thread);
     if (!currentThread) return <NoThread />;
 
     const {
@@ -62,8 +62,7 @@ const CurrentThread = () => {
                 callback={async () =>
                     bookmarked
                         ? unbookmarkThread({ dispatch, threadId })
-                        : (await bookmarkThread({ dispatch, threadId })) &&
-                          loadThreads(dispatch)
+                        : await bookmarkThread({ dispatch, threadId })
                 }
                 checkbox
                 input={'bookmarked'}

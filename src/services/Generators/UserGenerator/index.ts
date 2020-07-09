@@ -1,5 +1,39 @@
 import { SAUser } from '../../../types/types';
 
+export const generateUsers = async () => {
+    const url = 'https://randomuser.me/api/?results=10';
+    const response = await fetch(url);
+    const json = await response?.json();
+
+    const users = json.results.map((user: any) => {
+        const avatar = user.picture.thumbnail;
+        const id = user.login.uuid;
+        const name = user.login.username;
+        const title = `${user.location.street.name} ${user.location.city}`;
+        const profile = 'https://forums.somethingawful.com';
+        const regDate = new Date(user.registered.date).toLocaleString(
+            'default',
+            {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+            }
+        );
+
+        const generatedUser: SAUser = {
+            avatar,
+            id,
+            name,
+            title,
+            profile,
+            regDate,
+        };
+
+        return generatedUser;
+    });
+
+    return users;
+};
 //generates a random SA User
 const userGenerator = async () => {
     const url = 'https://randomuser.me/api/';

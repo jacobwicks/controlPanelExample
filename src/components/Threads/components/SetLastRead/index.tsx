@@ -30,8 +30,7 @@ const SetLastRead = ({ threadId }: { threadId: number }) => {
                     (await markLastRead({
                         page: lastRead,
                         threadId,
-                    })) &&
-                    loadThreads(dispatch)
+                    }))
                 }
             >
                 Go

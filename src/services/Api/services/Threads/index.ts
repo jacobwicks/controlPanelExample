@@ -8,6 +8,13 @@ import unbookmarkThread from './UnbookmarkThread';
 import bookmarkThread from './BookmarkThread';
 import markLastRead from './MarkLastRead';
 
+const getRandomInt = (min = 1, max = 100) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    max < min && (max = min + 1);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
 interface ThreadsResponse {
     threads: FrontEndThread[];
 }
@@ -24,15 +31,21 @@ const getThreads = async () => {
 };
 
 //loads albums into the albumsContext
-const loadThreads = async (dispatch: React.Dispatch<ThreadsAction>) => {
-    dispatch({ type: ThreadsActionTypes.fetchAttempt });
-    const threads = await getThreads();
-    if (threads) {
-        dispatch({
-            type: ThreadsActionTypes.setThreads,
-            threads,
-        });
-    } else dispatch({ type: ThreadsActionTypes.failed });
+const loadThreads = async ({
+    dispatch,
+    threads,
+}: {
+    dispatch: React.Dispatch<ThreadsAction>;
+    threads: FrontEndThread[];
+}) => {
+    const newThreads = threads.map((thread) => ({
+        ...thread,
+        unreadPosts: thread.unreadPosts + getRandomInt(0, 15),
+    }));
+    dispatch({
+        type: ThreadsActionTypes.setThreads,
+        threads: newThreads,
+    });
 };
 
 export { bookmarkThread, loadThreads, markLastRead, unbookmarkThread };

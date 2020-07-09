@@ -6,6 +6,7 @@ import { simulateRunForAllThreads } from '../../../../services/Generators/LogEve
 import { ThreadsContext } from '../../../../services/ThreadsContext';
 import { EventsContext } from '../../../../services/EventsContext';
 import { ActionsContext } from '../../../../services/ActionsContext';
+import { BotActionTypes } from '../../../../types/Bot';
 
 const ControlButtons = () => {
     const { dispatch, settings } = useContext(BotContext);
@@ -14,7 +15,22 @@ const ControlButtons = () => {
     const { threads } = useContext(ThreadsContext);
     const on = !!settings?.on;
     const running = !!settings?.running;
+    const botName = settings?.botName || '';
 
+    const doRunOnce = async () => {
+        runOnce(dispatch);
+        await simulateRunForAllThreads({
+            actions,
+            botName,
+            dispatch: eventsDispatch,
+            threads: threads || [],
+        });
+
+        dispatch({
+            type: BotActionTypes.setRunning,
+            running: false,
+        });
+    };
     return (
         <div>
             <Button onClick={() => !on && startBot(dispatch)} color="green">
@@ -39,12 +55,7 @@ const ControlButtons = () => {
                 color="blue"
                 onClick={() => {
                     if (!running) {
-                        runOnce(dispatch);
-                        simulateRunForAllThreads({
-                            actions,
-                            dispatch: eventsDispatch,
-                            threads: threads || [],
-                        });
+                        doRunOnce();
                     }
                 }}
             >
