@@ -27,6 +27,11 @@ const Interval = () => {
         <React.Fragment>
             <Message>
                 <Message.Header>Interval</Message.Header>
+                <p>When the bot is on, it will run every interval.</p>
+                <p>
+                    You can increase or decrease the interval to a minimum of 2
+                    minutes.
+                </p>
                 <p>Runs Every {interval} Minutes</p>
             </Message>
             <div>

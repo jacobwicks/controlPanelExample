@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Button, Segment, Popup } from 'semantic-ui-react';
+import { Button, Segment, Popup, Icon } from 'semantic-ui-react';
 import ReactMarkdown from '../../../Markdown';
 import useResize from '../../../APIs/components/Instructions/GenericInstructions/services/UseResize';
 import { KeyStringInterface } from '../../../../types/types';
@@ -108,9 +108,13 @@ export const Instructions = ({
         <div ref={divRef} style={{ marginBottom: 20 }}>
             <Popup
                 trigger={
-                    <Button onClick={() => input && setOpen(!open)}>
-                        {action}
-                    </Button>
+                    <div
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => input && setOpen(!open)}
+                    >
+                        <Button>{action}</Button>
+                        <Icon name="question circle" />
+                    </div>
                 }
                 content="click for instructions"
                 disabled={open || noInstructions}

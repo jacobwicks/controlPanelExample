@@ -24,12 +24,12 @@ export const rejectImage = async ({
     //dispatch action to AlbumsContext
     dispatch({ type: AlbumsActionTypes.reject, hash });
 
-    //return true if status === 200, else false
-    (await rejectImageAPI(hash))
-        ? //maybe display a message with a link? Or not, who cares
-          console.log(`image successfully rejected`)
-        : //should probably display a failure alert... reject failed, added back to queue
-          dispatch({ type: AlbumsActionTypes.pending, hash });
+    // //return true if status === 200, else false
+    // (await rejectImageAPI(hash))
+    //     ? //maybe display a message with a link? Or not, who cares
+    //       console.log(`image successfully rejected`)
+    //     : //should probably display a failure alert... reject failed, added back to queue
+    //       dispatch({ type: AlbumsActionTypes.pending, hash });
 };
 
 export default rejectImage;

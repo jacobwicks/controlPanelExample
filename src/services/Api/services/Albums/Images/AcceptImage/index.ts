@@ -35,12 +35,12 @@ const acceptImage = async ({
     //dispatch action to AlbumsContext
     dispatch({ type: AlbumsActionTypes.accept, hash });
 
-    const uploadedImageUrl = await acceptImageAPI(hash);
-    uploadedImageUrl
-        ? //maybe display a message with a link? Or not, who cares
-          console.log(`image successfully uploaded to`, uploadedImageUrl)
-        : //should probably display a failure alert... Upload failed, added back to queue
-          dispatch({ type: AlbumsActionTypes.pending, hash });
+    // const uploadedImageUrl = await acceptImageAPI(hash);
+    // uploadedImageUrl
+    //     ? //maybe display a message with a link? Or not, who cares
+    //       console.log(`image successfully uploaded to`, uploadedImageUrl)
+    //     : //should probably display a failure alert... Upload failed, added back to queue
+    //       dispatch({ type: AlbumsActionTypes.pending, hash });
 };
 
 export default acceptImage;
